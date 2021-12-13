@@ -1,0 +1,169 @@
+{VERSION 6 0 "IBM INTEL NT" "6.0" }
+{USTYLETAB {CSTYLE "Maple Input" -1 0 "Courier" 0 1 255 0 0 1 0 1 0 0 
+1 0 0 0 0 1 }{CSTYLE "2D Math" -1 2 "Times" 0 1 0 0 0 0 0 0 2 0 0 0 0 
+0 0 1 }{CSTYLE "2D Output" 2 20 "" 0 1 0 0 255 1 0 0 0 0 0 0 0 0 0 1 }
+{PSTYLE "Normal" -1 0 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 
+2 2 1 1 1 1 }1 1 0 0 0 0 1 0 1 0 2 2 0 1 }{PSTYLE "Heading 1" -1 3 1 
+{CSTYLE "" -1 -1 "Times" 1 18 0 0 0 1 2 1 2 2 2 2 1 1 1 1 }1 1 0 0 8 
+4 1 0 1 0 2 2 0 1 }{PSTYLE "Warning" -1 7 1 {CSTYLE "" -1 -1 "Courier
+" 1 10 0 0 255 1 2 2 2 2 2 1 1 1 3 1 }1 1 0 0 0 0 1 0 1 0 2 2 0 1 }
+{PSTYLE "Error" -1 8 1 {CSTYLE "" -1 -1 "Courier" 1 10 255 0 255 1 2 
+2 2 2 2 1 1 1 3 1 }1 1 0 0 0 0 1 0 1 0 2 2 0 1 }{PSTYLE "Maple Output
+" -1 11 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 1 1 1 }
+3 3 0 0 0 0 1 0 1 0 2 2 0 1 }{PSTYLE "Maple Output" -1 12 1 {CSTYLE "
+" -1 -1 "Times" 1 12 0 0 0 1 2 2 2 2 2 2 1 1 1 1 }1 3 0 0 0 0 1 0 1 0 
+2 2 0 1 }{PSTYLE "Heading 2" -1 256 1 {CSTYLE "" -1 -1 "Times" 1 14 0 
+0 0 1 2 2 2 2 2 2 1 1 1 1 }1 1 0 0 8 2 1 0 1 0 2 2 0 1 }{PSTYLE "Headi
+ng 1" -1 257 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 0 1 2 1 2 2 2 2 1 1 
+1 1 }1 1 0 0 8 4 1 0 1 0 2 2 0 1 }{PSTYLE "Normal" -1 258 1 {CSTYLE "
+" -1 -1 "Times" 1 14 0 0 0 1 2 2 2 2 2 2 1 1 1 1 }1 1 0 0 0 0 1 0 1 0 
+2 2 0 1 }{PSTYLE "Normal" -1 259 1 {CSTYLE "" -1 -1 "Times" 1 12 0 0 
+0 1 2 2 2 2 2 2 1 1 1 1 }3 1 0 0 0 0 1 0 1 0 2 2 0 1 }{PSTYLE "Heading
+ 1" -1 260 1 {CSTYLE "" -1 -1 "Times" 1 14 0 0 0 1 2 1 2 2 2 2 1 1 1 
+1 }1 1 0 0 8 4 1 0 1 0 2 2 0 1 }}
+{SECT 0 {EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 21 "restart:with(linalg)
+:" }}{PARA 7 "" 1 "" {TEXT -1 80 "Warning, the protected names norm an
+d trace have been redefined and unprotected\n" }}}{SECT 1 {PARA 3 "" 
+0 "" {TEXT -1 25 "\"SourceFunctions\" library" }}{EXCHG {PARA 0 "> " 
+0 "" {MPLTEXT 1 0 0 "" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 60 "ma
+rch('create', cat(libname, \"/SrcFncList_Sturm.lib\"), 100):" }}}
+{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 8395 "SourceFunctions_Sturm:=mod
+ule()\nexport Y, TransY, R, F, Xi, P, beta, alpha, KGKoeff, YY_As_Func
+, YY, Sturm, psi_sturm, psi_coul, R_coul;\nglobal r,  p, theta, phi, h
+;\nlocal Phi, Lej, P1, Theta, Lag, IsCorrectIndexes, ErrParamStr;\nopt
+ion package;\n\nErrParamStr:= `Error parameters value`;\nIsCorrectInde
+xes:=(l,m,n)->if (l>0)and(m>=0)and(m<l)and(abs(n)<=m) then true else f
+alse fi;\n\n#Calculation of spherical harmonics Y\nPhi:=(l,m)->(2*Pi)^
+(-1/2)*exp(I*m*phi);\nLej:=(l,x)->if l=0 then 1 else 1/(2^l*l!)*diff((
+1-x^2)^l,x$l) fi;\nP1:=(l,m,x)->if m=0 then Lej(l,x) else (1-x^2)^(m/2
+)*diff(Lej(l,x),x$m) fi;\nTheta:=(d,l,m)->sqrt((2*l+1)*(l-m)!/(l+m)!/2
+)*subs(d=cos(theta),P1(l,m,d));\nY:=proc(l,m)\n  description \"\";\n  \+
+if (l>=0)and(abs(m)<=l) then\n   if m<0 then simplify((-1)^l*Theta(d,l
+,-m)*Phi(l,m),symbolic)\n   else simplify((-1)^(l-m)*Theta(d,l,m)*Phi(
+l,m),symbolic)\n   fi;\n  fi;\nend proc;\n\n#Inversion of Y\nTransY:=(
+l,m)->(-1)^m*Y(l,-m);\n\n#Sturmian functions; b=1/sqrt(-E0)\nSturm:=pr
+oc(np,lp,b)\nlocal kk,alpha_nl,N_nl,altLaguerreL;  kk:=1/b: alpha_nl:=
+kk*np: N_nl:=-sqrt((np-lp-1)!/((np+lp)!)^3/2): altLaguerreL := (n,a,x)
+ -> (-1)^a*n!*LaguerreL(n-a,a,x):   N_nl*exp(-kk*r)*(2*kk*r)^(lp+1)*si
+mplify(altLaguerreL(np+lp,2*lp+1,2*kk*r) ):\nend proc;\n\n#Normalizati
+on of sturmian functions\nR:=proc(n,l,b)                              \+
+                                         \nsubs(r=r, Sturm(n,l,b) /r )
+/sqrt(int(subs(r=r,Sturm(n,l,b)^2/r^2)*r^2,r=0..infinity)) :\nend proc
+;\n\n#Calculation of coulomb radial functions\nR_coul:=proc(n,l)      \+
+                                                                    lo
+cal Lag;                                                              \+
+       Lag:=(n,m,z1)->if k<>m then n!/(n-m)!*exp(z1)*diff(z1^(n-m)*exp
+(-z1),z1$n) else 1 fi;\nsimplify(-1*(n-l-1)!^(1/2)*(2/n)^(3/2)/((n+l)!
+^(3/2)*(2*n)^(1/2))*exp(-r/(n*r0))*(2*r/(n*r0))^l*subs(z1=2*r/(n*r0),L
+ag(n+l,2*l+1,z1))/r0^(3/2));\nend proc;\n\n#Calculations of auxiliary \+
+QDF functions\npsi_sturm:=proc(np,lp,mp,b)                            \+
+                                    R(np,lp,b)*Y(lp,mp):\nend proc;\n
+\n#Calculations of coulomb wave functions\npsi_coul:=proc(np,lp,mp)   \+
+                                                             R_coul(np
+,lp)*Y(lp,mp):\nend proc;\n\n#Fourier transforms of auxiliary function
+s\nF:=(l)->2*Pi*(-I)^l*BesselJ(l+1/2,(p*r)/h);\nXi:=(n,l,m,b)->\nif Is
+CorrectIndexes(n,l,m) then int(R(n,l,b)*Y(l,m)*F(l)*r^2/(2*Pi*h)/(p*r)
+^(1/2),r=0..infinity)\nelse print(cat(ErrParamStr));\nfi;\n\n#Calculat
+ion of functions P\nP:=(l,m,b)->simplify(int(R(l,m,b)*F(m)*r^2/(p*r)^(
+1/2)/(2*Pi*h),r=0..infinity));\n\n#Calculation of functions beta\nbeta
+:=(l,m,n,b)->if IsCorrectIndexes(l,m,n) then simplify(abs(Xi(l,m,n,b))
+^2) else print(cat(ErrParamStr)) fi;\n\n#Calculation of functions alph
+a\nalpha:=(l,m,n,b)->if IsCorrectIndexes(l,m,n) then simplify(abs(R(l,
+m,b)*Y(m,n))^2) else print(cat(ErrParamStr)) fi;\n\n#Calculation of Cl
+ebsh-Gordon coefficients\nKGKoeff:=proc(a, a1, b, b1, c, c1)\nlocal g,
+C,D,E,F;\ndescription \"\";\nif (c>=abs(a-b))and(c<=(a+b))and\n   (c1=
+(a1+b1))and\n   (a>=0)and(b>=0)and(c>=0)and\n   (a>=abs(a1))and(b>=abs
+(b1))and(c>=abs(c1))and\n   ((a+a1)>=0)and((b+b1)>=0)and((c+c1)>=0)and
+((a+b+c)>=0) then\n if c=0 then\n   return (-1)^(a-a1)/sqrt(2*a+1);\n \+
+elif b=0 then\n   return 1;\n elif c=(a+b) then\n   return sqrt(((2*a)
+!*(2*b)!*(a+b+a1+b1)!*(a+b-a1-b1)!)/((2*a+2*b)!*(a+a1)!*(a-a1)!*(b+b1)
+!*(b-b1)!));\n elif c=(a+b-1) then\nreturn 2*(b*a1-a*b1)*sqrt(((2*a+2*
+b-1)*(2*a-1)!*(2*b-1)!*(a+b+a1+b1-1)!*(a+b-a1-b1-1)!)/((a+a1)!*(a-a1)!
+*(b+b1)!*(b-b1)!*(2*a+2*b)!));\n elif (c=(a+b-2)) then\nreturn sqrt((2
+*a*(2*a-1)*2*b*(2*b-1))/(2*(2*a+2*b-2)*(2*a+2*b-1)))/sqrt(binomial(2*a
+,a-a1)*binomial(2*b,b-b1)*binomial(2*a+2*b-4,a+b-a1-b1-2))*(binomial(2
+*a-2,a-a1)*binomial(2*b-2,b+b1)-2*binomial(2*a-2,a-a1-1)*binomial(2*b-
+2,b+b1-1)+binomial(2*a-2,a-a1-2)*binomial(2*b-2,b+b1-2));\n elif (a>=b
+)and(c=(a-b)) then\n   return (-1)^(b+b1)*sqrt(((a+a1)!*(a-a1)!*(2*b)!
+*(2*a-2*b+1)!)/((2*a+1)!*(b+b1)!*(b-b1)!*(a-b+a1+b1)!*(a-b-a1-b1)!));
+\n elif (b<=(a+1))and(c=(a-b+1)) then\nreturn (-1)^(b+b1+1)*2*(a*b1+b*
+a1+b1)*sqrt(((2*a-2*b+3)*(2*b-1)!*(2*a-2*b+1)!*(a+a1)!*(a-a1)!)/((2*a+
+2)!*(b+b1)!*(b-b1)!*(a-b+a1+b1+1)!*(a-b-a1-b1+1)!));\n elif (b<=(a+2))
+and(c=(a-b+2)) then\nreturn sqrt(((2*b-1)*2*b*(2*a-2*b+5)*(2*a-2*b+4)*
+(2*a-2*b+3))/(2*(2*a+1)*(2*a+2)*(2*a+3)))/sqrt(binomial(2*a,a-a1)*bino
+mial(2*b,b-b1)*binomial(2*a-2*b+4,a-b-a1-b1+2))*(-1)^(b+b1)*(binomial(
+2*b-2,b+b1)*binomial(2*a-2*b+2,a-b-a1-b1)-2*binomial(2*b-2,b+b1-1)*bin
+omial(2*a-2*b+2,a-b-a1-b1+1)+binomial(2*b-2,b+b1-2)*binomial(2*a-2*b+2
+,a-b-a1-b1+2));\n elif (a=b)and(a1=b1) then\n  if type(2*a+c,even) the
+n\n    g:=(2*a+c)/2;\n    return (-1)^(g-c)*sqrt(2*c+1)*g!/((c+c1)/2)!
+/((c-c1)/2)!/(g-c)!*sqrt(((c+c1)!*(c-c1)!*(2*g-2*c)!)/(2*g+1)!);\n  el
+se return 0;\n  end if; \n elif (b=(a+1/2)) then\n   if type((2*a+c), \+
+even) then\n     C:=(-1)^(c/2-a)*(a+c/2)!/(a-c/2)!/(c/2+a1)!/(c/2-a1)!
+*sqrt(((2*a+c+2)*(2*a-c)!*(c+2*a1)!*(c-2*a1)!)/2/(2*a+c+1)!);\n     if
+ b1=(a1+1/2) then\n       return sqrt((c+2*a1+1)/(a+a1+1))*C;\n     el
+if (b1=(a1-1/2)) then\n       return sqrt((c-2*a1+1)/(a-a1+1))*C;\n   \+
+  end if;\n   else\nD:=(-1)^((c-1)/2-a)*(a+(c+1)/2)!/(a-(c+1)/2)!/((c+
+1)/2+a1)!/((c+1)/2-a1)!*sqrt(((2*a-c)!*(c+2*a1+1)!*(c-2*a1+1)!)/2/(2*a
++c+2)!);\n     if b1=(a1+1/2) then\n       return sqrt((c-2*a1+1)/(a+a
+1+1))*D;\n     elif (b1=(a1-1/2)) then\n       return -sqrt((c+2*a1+1)
+/(a-a1+1))*D;\n     end if;\n   end if;\n\n\n elif (b=(a+1)) then\n   \+
+if type((2*a+c), even) then\n     try\nE:=(-1)^(c/2-a)*(a+c/2)!/2/(a-c
+/2)!/(c/2+a1)!/(c/2-a1)!*sqrt((2*c+1)*(2*a+c+2)*(2*a-c+1)!*(c+2*a1)!*(
+c-2*a1)!/c/(c+1)/(2*a+c+1)!);\n     catch :\n       E:=0;\n     end tr
+y;\n     if (b1=(a1+1)) then\n       return -sqrt((c+2*a1+1)*(c-2*a1)/
+(a+a1+2)/(a+a1+1))*E;\n     elif (b1=a1) then\n       return 2*a1/sqrt
+((a+a1+1)*(a-a1+1))*E;\n     elif (b1=(a1-1)) then\n       return sqrt
+((c-2*a1+1)*(c+2*a1)/(a-a1+2)/(a-a1+1))*E;\n     else return 0;\n     \+
+end if;\n   else\n     try\nF:=(-1)^((c-1)/2-a)*(a+(c+1)/2)!/(a-(c+1)/
+2)!/(a-(c-1)/2)!*sqrt((2*c+1)*(2*a-c+1)!/c/(c+1)/(2*a+c+2)!);\n     ca
+tch :\n       F:=0;\n     end try;\n     if (b1=(a1+1)) then\n       r
+eturn (c*(c+1)+(2*a1+1)*(2*a+2))/2/((c+1)/2+a1)!/((c+1)/2-a1)!*sqrt((c
++2*a1+1)!*(c-2*a1-1)!/(a+a1+2)/(a+a1+1))*F;\n     elif (b1=a1) then\n \+
+      return (2*a+2)/((c-1)/2+a1)!/((c-1)/2-a1)!*sqrt((c+2*a1)!*(c-2*a
+1)!/(a+a1+1)/(a-a1+1))*F;\n     elif (b1=(a1-1)) then\n       return (
+c*(c+1)-(2*a1-1)*(2*a+2))/2/((c+1)/2-a1)!/((c-1)/2+a1)!*sqrt((c+2*a1-1
+)!*(c-2*a1+1)!/(a-a1+2)/(a-a1+1))*F;\n     else return 0;\n     end if
+;\n   end if;\n\n\n elif (a1=0)and(b1=0)and(c1=0) then\n   if type((a+
+b+c),even) then\n     g:=(a+b+c)/2;\n     return (-1)^(g-c)*sqrt(2*c+1
+)*g!/(g-a)!/(g-b)!/(g-c)!*sqrt((2*g-2*a)!*(2*g-2*b)!*(2*g-2*c)!/(2*g+1
+)!);\n   else 0;\n   end if;\n elif (c1=c) then\n   return (-1)^(a-a1)
+*sqrt((2*c+1)!*(a+b-c)!*(a+a1)!*(b+b1)!/(a+b+c+1)!/(a-b+c)!/(-a+b+c)!/
+(a-a1)!/(b-b1)!);\n elif (a1=a) then\n   return sqrt((2*c+1)!*(2*a)!*(
+-a+b+c)!*(b-b1)!*(c+c1)!/(a+b+c+1)!/(a-b+c)!/(a+b-c)!/(b+b1)!/(c-c1)!)
+;\n elif (c1=(c-1)) then\nreturn (-1)^(a-a1)*((b-b1)*(b+b1+1)-(a-a1)*(
+a+a1+1))*sqrt((2*c+1)*(2*c-1)!*(a+b-c)!*(a+a1)!*(b+b1)!/(a+b+c+1)!/(a-
+b+c)!/(-a+b+c)!/(a-a1)!/(b-b1)!);\n elif (a1=(a-1)) then\nreturn ((c-c
+1)*(c+c1+1)-(b-b1)*(b-b1+1))*sqrt((2*c+1)*(2*a-1)!*(-a+b+c)!*(b-b1)!*(
+c+c1)!/(a+b+c+1)!/(a-b+c)!/(a+b-c)!/(b+b1)!/(c-c1)!);\n else return `C
+oeff not found!`;\nend if;\nelse return 0;\nend if;\nend proc;\n\n#pro
+ducts of spherical harmonics in an explicit form\nYY:=proc(l1,m1,l2,m2
+)\nlocal L,M,n,s,m,ConjSecParam;\ndescription \"\";\nn:=10;\ns:=0;\nif
+ nargs<5 then ConjSecParam:= false; else ConjSecParam:=args[5]; fi;\ni
+f ConjSecParam then m:=-m2; else m:=m2; fi;\nfor L from 0 to n do\n  f
+or M from -n to n do\n    s:=s+sqrt((2*l1+1)*(2*l2+1)/4/Pi/(2*L+1))*KG
+Koeff(l1,0,l2,0,L,0)*KGKoeff(l1,m1,l2,m,L,M)*Y(L,M);\nod;od;\nif ConjS
+ecParam then\n  s:=(-1)^m2*s;\nfi;\nsimplify(s);\nend proc;\n\n#produc
+t of spherical harmonics expressed over Y\nYY_As_Func:=proc(l1,m1,l2,m
+2)\nlocal L,M,n,s,m,ConjSecParam;\nglobal Y;\ndescription \"\";\nn:=10
+;\ns:=0;\nif nargs<5 then ConjSecParam:= false; else ConjSecParam:=arg
+s[5]; fi;\nif ConjSecParam then m:=-m2; else m:= m2; fi;\nfor L from 0
+ to n do\n  for M from -n to n do\n    s:=s+sqrt((2*l1+1)*(2*l2+1)/4/P
+i/(2*L+1))*KGKoeff(l1,0,l2,0,L,0)*KGKoeff(l1,m1,l2,m,L,M)*Y(L,M);\nod;
+od;\nif ConjSecParam then\n  s:=(-1)^m2*s;\nfi;\ns;\nend proc;\n\nend \+
+module;\nsavelib('SourceFunctions_Sturm'): " }}{PARA 12 "" 1 "" 
+{XPPMATH 20 "6#>%6SourceFunctions_SturmG`61%\"YG%'TransYG%\"RG%\"FG%#X
+iG%\"PG%%betaG%&alphaG%(KGKoeffG%+YY_As_FuncG%#YYG%&SturmG%*psi_sturmG
+%)psi_coulG%'R_coulGb6#%+thismoduleG6)%$PhiG%$LejG%#P1G%&ThetaG%$LagG%
+1IsCorrectIndexesG%,ErrParamStrG6#%(packageG61%\"YG%'TransYG%\"RG%\"FG
+%#XiG%\"PG%%betaG%&alphaG%(KGKoeffG%+YY_As_FuncG%#YYG%&SturmG%*psi_stu
+rmG%)psi_coulG%'R_coulG6\"FS6'%\"rG%\"pG%&thetaG%$phiG%\"hGFS6\"6)%$Ph
+iG%$LejG%#P1G%&ThetaG%$LagG%1IsCorrectIndexesG%,ErrParamStrG" }}{PARA 
+8 "" 1 "" {TEXT -1 77 "Error, (in savelib) unable to save [SourceFunct
+ions_Sturm] in C:\\Maple_8/lib\n" }}}{EXCHG {PARA 0 "> " 0 "" 
+{MPLTEXT 1 0 0 "" }}}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 82 "with(S
+ourceFunctions_Sturm);   assume(E0<0,r>=0,h>0,b>0,b1>0,b2>0,b3>0,b4>0,
+me>0);" }}{PARA 11 "" 1 "" {XPPMATH 20 "6#71%\"FG%(KGKoeffG%\"PG%\"RG%
+'R_coulG%&SturmG%'TransYG%#XiG%\"YG%#YYG%+YY_As_FuncG%&alphaG%%betaG%)
+psi_coulG%*psi_sturmG" }}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 1 " " 
+}}}{EXCHG {PARA 0 "> " 0 "" {MPLTEXT 1 0 0 "" }}}}{MARK "3 0 0" 1 }
+{VIEWOPTS 1 1 0 1 1 1803 1 1 1 1 }{PAGENUMBERS 0 1 2 33 1 1 }

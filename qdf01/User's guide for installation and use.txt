@@ -1,0 +1,50 @@
+
+
+           U S E R' s  G U I D E  for  I N S T A L L A T I O N and USE 
+       
+==========================================================================
+
+             Information for user's of the QDF01 package.
+             
+==========================================================================
+
+i) Installation of the Maple libary for the QDF01 package
+---------------------------------------------------------
+
+To install the QDF01 package, it is sufficient to make the following
+step:
+
+(a) Open the file QDF01_install_lib and execute it. The library SourceFunctions_Sturm
+    will be then available by the command
+
+	with(SourceFunctions_Sturm)
+
+    in any Maple worksheet opened in this computer.
+
+
+ii)  Use of the package
+-------------------------------
+
+(a) The file QDF01_source is the main file which represents the full version of the package.
+    It is constructed as a short manual for users and contains extensive comments, examples and
+    explanations. It may be used for calculations as well.
+
+(b) The file QDF01_work is a short version of the QDF01_source and does not contain extensive
+    explanations and examples. It is recommended for calculations.
+ 
+
+(c) Please, note that the data files (B_E0, inv_B_E0, OHM_1, OHM_2, OHM_3, OHM_4, lev_Li, lev_Na)
+    should be located in the same directory as the used Maple worksheet.
+
+(d) Calculations of Ritz matrices may be skipped in case that they have been calculated before.
+    The matrices for hydrogen-like atoms may be read from external files (B_E0, inv_B_E0, OHM_1, 
+    OHM_2, OHM_3, OHM_4). In case that you have made modifications in auxiliary functions and/or
+    potential energy or any other changes that  affected the calculation of Ritz matrices, you 
+    should calculate these matrices using the present program.
+
+(e) The files lev_Li, lev_Na contain experimental excited energy levels of neutral Li and Na atoms 
+    retrieved from  NIST Atomic Spectra Database Levels Data  -  
+    http://physics.nist.gov/PhysRefData/Handbook/index.html. This data is read and used by the program.
+
+
+
